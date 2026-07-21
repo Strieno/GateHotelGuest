@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gate Hotel - Guest Information</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f7f4ef;color:#222;margin:0}
+header{background:#2f2f2f;color:#fff;padding:24px;text-align:center}
+header h1{color:#b08a3e;margin:0}
+.container{max-width:900px;margin:auto;padding:20px}
+.card{background:#fff;border-radius:12px;padding:18px;margin:15px 0;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+h2{color:#b08a3e;margin-top:0}
+table{width:100%;border-collapse:collapse}
+td,th{padding:8px;border-bottom:1px solid #ddd}
+button{background:#b08a3e;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer}
+</style>
+<script>
+function copyPassword(){
+ navigator.clipboard.writeText("123123");
+ alert("Password copied!");
+}
+</script>
+</head>
+<body>
+<header>
+<h1>THE GATE HOTEL & APARTMENTS</h1>
+<p>Guest Information Portal</p>
+</header>
+<div class="container">
+<div class="card">
+<h2>📶 Wi‑Fi</h2>
+<p><b>Network:</b> GATE WIFI</p>
+<p><b>Username:</b> Your Room Number</p>
+<p><b>Password:</b> 123123</p>
+<button onclick="copyPassword()">Copy Password</button>
+</div>
+
+<div class="card">
+<h2>🍳 Breakfast</h2>
+<p><b>Location:</b> Restaurant (First Floor)</p>
+<p><b>Hours:</b> 6:00 AM – 10:00 AM</p>
+</div>
+
+<div class="card">
+<h2>🏊 Facilities</h2>
+<ul>
+<li>Swimming Pool – Ground Floor</li>
+<li>Gym – First Floor</li>
+<li>Masjid – First Floor</li>
+<li>Restaurant – First Floor</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>☎ Reception</h2>
+<p>Available 24 Hours</p>
+<p>Dial: <b>11</b> or <b>22</b> or <b>33</b></p>
+</div>
+
+<div class="card">
+<h2>🚭 Hotel Policies</h2>
+<ul>
+<li>No Smoking</li>
+<li>No Pets Allowed</li>
+<li>Please respect hotel property and other guests.</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>📍 Location</h2>
+<p>The Gate Hotel & Apartments<br>Taiba District, Dammam, Saudi Arabia</p>
+</div>
+
+<div class="card">
+<h2>🚨 Saudi Arabia Emergency Numbers</h2>
+<table>
+<tr><th>Service</th><th>Number</th></tr>
+<tr><td>Police</td><td>911</td></tr>
+<tr><td>Ambulance</td><td>997</td></tr>
+<tr><td>Fire</td><td>998</td></tr>
+</table>
+</div>
+</div>
+</body>
+</html>
