@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gate Hotel - Guest Portal | فندق وشقق ذي قيت</title>
+<style>
+  :root {
+    --primary-gold: #b08a3e;
+    --gold-hover: #967432;
+    --dark-bg: #2f2f2f;
+    --light-bg: #f7f4ef;
+    --card-bg: #ffffff;
+    --text-main: #222222;
+  }
+  body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: var(--light-bg); 
+    color: var(--text-main); 
+    margin: 0; 
+    transition: all 0.3s ease;
+  }
+  header { 
+    background: var(--dark-bg); 
+    color: #fff; 
+    padding: 25px 20px; 
+    text-align: center; 
+    border-bottom: 4px solid var(--primary-gold);
+    position: relative;
+  }
+  .lang-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-gold);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  [dir="rtl"] .lang-btn {
+    right: auto;
+    left: 20px;
+  }
+  .logo { max-width: 220px; height: auto; margin-bottom: 10px; }
+  header h1 { color: var(--primary-gold); margin: 5px 0 0 0; font-size: 1.8em; letter-spacing: 1px; }
+  header p { margin-top: 5px; color: #dddddd; }
+  
+  .container { 
+    max-width: 1000px; 
+    margin: auto; 
+    padding: 20px; 
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .card { 
+    background: var(--card-bg); 
+    border-radius: 12px; 
+    padding: 22px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06); 
+    border-top: 4px solid var(--primary-gold);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  h2 { color: var(--primary-gold); margin-top: 0; font-size: 1.3em; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #eeeeee; padding-bottom: 10px; }
+  ul { padding-inline-start: 20px; margin: 10px 0; }
+  li { margin-bottom: 10px; line-height: 1.4; }
+  
+  .action-btn { 
+    background: var(--primary-gold); 
+    color: #fff; 
+    border: none; 
+    padding: 12px 18px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    width: 100%; 
+    margin-top: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    box-sizing: border-box;
+    transition: background 0.2s ease;
+  }
+  .action-btn:hover { background: var(--gold-hover); }
+  .action-btn.secondary { background: #444444; }
+  .action-btn.secondary:hover { background: #222222; }
+  
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  td, th { padding: 10px; border-bottom: 1px solid #ddd; text-align: start; }
+  th { background: #f9f9f9; color: var(--dark-bg); }
+  .emergency-link { color: #d32f2f; font-weight: bold; text-decoration: none; display: block; }
+  
+  footer {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 0.9em;
+  }
+</style>
+<script>
+function copyPassword(){
+  navigator.clipboard.writeText("123123");
+  const btn = document.getElementById("copy-btn");
+  const isArabic = document.documentElement.getAttribute("lang") === "ar";
+  btn.innerText = isArabic ? "✓ تم نسخ كلمة المرور!" : "✓ Password Copied!";
+  btn.style.background = "#2e7d32";
+  setTimeout(() => {
+    btn.innerText = isArabic ? "نسخ كلمة المرور" : "Copy Password";
+    btn.style.background = "var(--primary-gold)";
+  }, 3000);
+}
+
+function toggleLanguage() {
+  const html = document.documentElement;
+  const langBtn = document.getElementById("lang-btn");
+  const isEnglish = html.getAttribute("lang") === "en";
+  
+  if (isEnglish) {
+    html.setAttribute("lang", "ar");
+    html.setAttribute("dir", "rtl");
+    langBtn.innerText = "English / الإنجليزية";
+    updateTexts("ar");
+  } else {
+    html.setAttribute("lang", "en");
+    html.setAttribute("dir", "ltr");
+    langBtn.innerText = "العربية / Arabic";
+    updateTexts("en");
+  }
+}
+
+const content = {
+  en: {
+    portalTitle: "THE GATE HOTEL & APARTMENTS",
+    portalSub: "Guest Information Portal",
+    wifiTitle: "📶 Wi‑Fi Access",
+    wifiNet: "<b>Network:</b> GATE WIFI",
+    wifiUser: "<b>Username:</b> Your Room Number",
+    wifiPass: "<b>Password:</b> 123123",
+    copyBtn: "Copy Password",
+    stayTitle: "🕒 Stay Information",
+    checkIn: "<b>Check-in:</b> 2:00 PM",
+    checkOut: "<b>Check-out:</b> 12:00 PM (Afternoon / Noon)",
+    roomService: "<b>Room Service:</b> Dial 44 (1:00 PM - 11:00 PM)",
+    dineTitle: "🍽️ Gardena Restaurant",
+    dineLoc: "<b>Location:</b> First Floor • <b>Ext:</b> 200",
+    dineHours: "• <b>Breakfast:</b> 6:00 AM – 10:00 AM<br>• <b>Lunch:</b> 11:00 AM – 3:00 PM<br>• <b>Dinner:</b> 7:00 PM – 11:00 PM",
+    dineBtn: "Call Gardena Restaurant (Ext. 200)",
+    facTitle: "🏊 Hotel Facilities",
+    facPool: "<b>Swimming Pool (Ground Floor):</b><br>• 👩 <b>Ladies Only:</b> 6:00 AM – 11:00 AM<br>• 👨 <b>Gentlemen Only:</b> 11:00 AM – 11:00 PM",
+    facGym: "<b>Fitness Gym:</b> First Floor (24 Hours / 7 Days a Week)",
+    facMasjid: "<b>Prayer Room (Masjid):</b> First Floor",
+    facCafe: "<b>Starbucks Café:</b> Ground Floor (8:00 AM – 10:00 PM)",
+    recTitle: "☎ Front Desk Reception",
+    recDesc: "Available 24 Hours to assist you.",
+    recDial: "Dial from room phone: <b>11</b>, <b>22</b>, or <b>33</b>",
+    recBtn: "Call Front Desk",
+    polTitle: "🚭 Hotel Policies",
+    pol1: "No Smoking inside the rooms",
+    pol2: "No Pets Allowed",
+    pol3: "Please respect quiet hours after 10:00 PM",
+    locTitle: "📍 Location & Nearby",
+    locDesc: "The Gate Hotel & Apartments<br>Taiba District, Dammam, Saudi Arabia",
+    locBtn: "📍 Open in Google Maps",
+    emTitle: "🚨 Emergency Numbers",
+    emPolice: "Police",
+    emAmb: "Ambulance",
+    emFire: "Fire Department"
+  },
+  ar: {
+    portalTitle: "فندق وشقق ذي قيت",
+    portalSub: "بوابة معلومات النزلاء",
+    wifiTitle: "📶 شبكة واي فاي (Wi-Fi)",
+    wifiNet: "<b>اسم الشبكة:</b> GATE WIFI",
+    wifiUser: "<b>اسم المستخدم:</b> رقم غرفتك",
+    wifiPass: "<b>كلمة المرور:</b> 123123",
+    copyBtn: "نسخ كلمة المرور",
+    stayTitle: "🕒 معلومات الإقامة",
+    checkIn: "<b>تسجيل الدخول:</b> 2:00 مساءً",
+    checkOut: "<b>تسجيل الخروج:</b> 12:00 ظهراً",
+    roomService: "<b>خدمة الغرف:</b> اتصل بالرقم 44 (1:00 م - 11:00 م)",
+    dineTitle: "🍽️ مطعم جاردينيا (Gardena)",
+    dineLoc: "<b>الموقع:</b> الدور الأول • <b>تحويلة:</b> 200",
+    dineHours: "• <b>الإفطار:</b> 6:00 ص – 10:00 ص<br>• <b>الغداء:</b> 11:00 ص – 3:00 م<br>• <b>العشاء:</b> 7:00 م – 11:00 م",
+    dineBtn: "الاتصال بمطعم جاردينيا (تحويلة 200)",
+    facTitle: "🏊 مرافق الفندق",
+    facPool: "<b>المسبح (الدور الأرضي):</b><br>• 👩 <b>مخصص للسيدات:</b> 6:00 ص – 11:00 ص<br>• 👨 <b>مخصص للرجال:</b> 11:00 ص – 11:00 م",
+    facGym: "<b>النادي الرياضي:</b> الدور الأول (متاح 24 ساعة طوال أيام الأسبوع)",
+    facMasjid: "<b>المصلى:</b> الدور الأول",
+    facCafe: "<b>مقهى ستاربكس (Starbucks):</b> الدور الأرضي (8:00 ص – 10:00 م)",
+    recTitle: "☎ الاستقبال ومكتب الاستعلامات",
+    recDesc: "فريقنا متاح على مدار 24 ساعة لخدمتك.",
+    recDial: "اتصل من هاتف الغرفة: <b>11</b> أو <b>22</b> أو <b>33</b>",
+    recBtn: "الاتصال بالاستقبال",
+    polTitle: "🚭 سياسات الفندق",
+    pol1: "يمنع التدخين منعاً باتاً داخل الغرف",
+    pol2: "غير مسموح باصطحاب الحيوانات الأليفة",
+    pol3: "يرجى مراعاة أوقات الهدوء بعد الساعة 10:00 مساءً",
+    locTitle: "📍 الموقع والأماكن القريبة",
+    locDesc: "فندق وشقق ذي قيت<br>حي طيبة، الدمام، المملكة العربية السعودية",
+    locBtn: "📍 فتح في خرائط جوجل",
+    emTitle: "🚨 أرقام الطوارئ في السعودية",
+    emPolice: "الشرطة",
+    emAmb: "الإسعاف",
+    emFire: "الدفاع المدني"
+  }
+};
+
+function updateTexts(lang) {
+  const t = content[lang];
+  document.getElementById("t-portalTitle").innerText = t.portalTitle;
+  document.getElementById("t-portalSub").innerText = t.portalSub;
+  document.getElementById("t-wifiTitle").innerText = t.wifiTitle;
+  document.getElementById("t-wifiNet").innerHTML = t.wifiNet;
+  document.getElementById("t-wifiUser").innerHTML = t.wifiUser;
+  document.getElementById("t-wifiPass").innerHTML = t.wifiPass;
+  document.getElementById("copy-btn").innerText = t.copyBtn;
+  document.getElementById("t-stayTitle").innerText = t.stayTitle;
+  document.getElementById("t-checkIn").innerHTML = t.checkIn;
+  document.getElementById("t-checkOut").innerHTML = t.checkOut;
+  document.getElementById("t-roomService").innerHTML = t.roomService;
+  document.getElementById("t-dineTitle").innerText = t.dineTitle;
+  document.getElementById("t-dineLoc").innerHTML = t.dineLoc;
+  document.getElementById("t-dineHours").innerHTML = t.dineHours;
+  document.getElementById("t-dineBtn").innerText = t.dineBtn;
+  document.getElementById("t-facTitle").innerText = t.facTitle;
+  document.getElementById("t-facPool").innerHTML = t.facPool;
+  document.getElementById("t-facGym").innerHTML = t.facGym;
+  document.getElementById("t-facMasjid").innerHTML = t.facMasjid;
+  document.getElementById("t-facCafe").innerHTML = t.facCafe;
+  document.getElementById("t-recTitle").innerText = t.recTitle;
+  document.getElementById("t-recDesc").innerText = t.recDesc;
+  document.getElementById("t-recDial").innerHTML = t.recDial;
+  document.getElementById("t-recBtn").innerText = t.recBtn;
+  document.getElementById("t-polTitle").innerText = t.polTitle;
+  document.getElementById("t-pol1").innerText = t.pol1;
+  document.getElementById("t-pol2").innerText = t.pol2;
+  document.getElementById("t-pol3").innerText = t.pol3;
+  document.getElementById("t-locTitle").innerText = t.locTitle;
+  document.getElementById("t-locDesc").innerHTML = t.locDesc;
+  document.getElementById("t-locBtn").innerText = t.locBtn;
+  document.getElementById("t-emTitle").innerText = t.emTitle;
+  document.getElementById("t-emPolice").innerText = t.emPolice;
+  document.getElementById("t-emAmb").innerText = t.emAmb;
+  document.getElementById("t-emFire").innerText = t.emFire;
+}
+</script>
+</head>
+<body>
+
+<header>
+<button class="lang-btn" id="lang-btn" onclick="toggleLanguage()">العربية / Arabic</button>
+<img src="logo.png" alt="The Gate Hotel & Apartments" class="logo">
+<h1 id="t-portalTitle">THE GATE HOTEL & APARTMENTS</h1>
+<p id="t-portalSub">Guest Information Portal</p>
+</header>
+
+<div class="container">
+
+<!-- CARD 1: WI-FI -->
+<div class="card">
+<div>
+  <h2 id="t-wifiTitle">📶 Wi‑Fi Access</h2>
+  <p id="t-wifiNet"><b>Network:</b> GATE WIFI</p>
+  <p id="t-wifiUser"><b>Username:</b> Your Room Number</p>
+  <p id="t-wifiPass"><b>Password:</b> 123123</p>
+</div>
+<button class="action-btn" id="copy-btn" onclick="copyPassword()">Copy Password</button>
+</div>
+
+<!-- CARD 2: STAY INFO -->
+<div class="card">
+<div>
+  <h2 id="t-stayTitle">🕒 Stay Information</h2>
+  <ul>
+    <li id="t-checkIn"><b>Check-in:</b> 2:00 PM</li>
+    <li id="t-checkOut"><b>Check-out:</b> 12:00 PM (Afternoon / Noon)</li>
+    <li id="t-roomService"><b>Room Service:</b> Dial 44 (1:00 PM - 11:00 PM)</li>
+  </ul>
+</div>
+</div>
+
+<!-- CARD 3: GARDENA RESTAURANT -->
+<div class="card">
+<div>
+  <h2 id="t-dineTitle">🍽️ Gardena Restaurant</h2>
+  <p id="t-dineLoc"><b>Location:</b> First Floor • <b>Ext:</b> 200</p>
+  <p id="t-dineHours">• <b>Breakfast:</b> 6:00 AM – 10:00 AM<br>• <b>Lunch:</b> 11:00 AM – 3:00 PM<br>• <b>Dinner:</b> 7:00 PM – 11:00 PM</p>
+</div>
+<a href="tel:200" class="action-btn secondary" id="t-dineBtn">Call Gardena Restaurant (Ext. 200)</a>
+</div>
+
+<!-- CARD 4: FACILITIES -->
+<div class="card">
+<div>
+  <h2 id="t-facTitle">🏊 Hotel Facilities</h2>
+  <ul>
+    <li id="t-facPool"><b>Swimming Pool (Ground Floor):</b><br>• 👩 <b>Ladies Only:</b> 6:00 AM – 11:00 AM<br>• 👨 <b>Gentlemen Only:</b> 11:00 AM – 11:00 PM</li>
+    <li id="t-facGym"><b>Fitness Gym:</b> First Floor (24 Hours / 7 Days a Week)</li>
+    <li id="t-facMasjid"><b>Prayer Room (Masjid):</b> First Floor</li>
+    <li id="t-facCafe"><b>Starbucks Café:</b> Ground Floor (8:00 AM – 10:00 PM)</li>
+  </ul>
+</div>
+</div>
+
+<!-- CARD 5: RECEPTION -->
+<div class="card">
+<div>
+  <h2 id="t-recTitle">☎ Front Desk Reception</h2>
+  <p id="t-recDesc">Available 24 Hours to assist you.</p>
+  <p id="t-recDial">Dial from room phone: <b>11</b>, <b>22</b>, or <b>33</b></p>
+</div>
+<a href="tel:0138000000" class="action-btn secondary" id="t-recBtn">Call Front Desk</a>
+</div>
+
+<!-- CARD 6: POLICIES -->
+<div class="card">
+<div>
+  <h2 id="t-polTitle">🚭 Hotel Policies</h2>
+  <ul>
+    <li id="t-pol1">No Smoking inside the rooms</li>
+    <li id="t-pol2">No Pets Allowed</li>
+    <li id="t-pol3">Please respect quiet hours after 10:00 PM</li>
+  </ul>
+</div>
+</div>
+
+<!-- CARD 7: LOCATION -->
+<div class="card">
+<div>
+  <h2 id="t-locTitle">📍 Location & Nearby</h2>
+  <p id="t-locDesc">The Gate Hotel & Apartments<br>Taiba District, Dammam, Saudi Arabia</p>
+</div>
+<a href="https://maps.google.com/?q=The+Gate+Hotel+and+Apartments+Dammam+Taiba+District" target="_blank" class="action-btn" id="t-locBtn">📍 Open in Google Maps</a>
+</div>
+
+<!-- CARD 8: EMERGENCIES -->
+<div class="card">
+<div>
+  <h2 id="t-emTitle">🚨 Emergency Numbers</h2>
+  <table>
+    <tr><th id="t-emPolice">Police</th><td><a href="tel:911" class="emergency-link">911 📞</a></td></tr>
+    <tr><th id="t-emAmb">Ambulance</th><td><a href="tel:997" class="emergency-link">997 📞</a></td></tr>
+    <tr><th id="t-emFire">Fire Department</th><td><a href="tel:998" class="emergency-link">998 📞</a></td></tr>
+  </table>
+</div>
+</div>
+
+</div>
+
+<footer>
+  <p>© 2026 The Gate Hotel & Apartments • Dammam, Saudi Arabia</p>
+</footer>
+
+</body>
+</html>
