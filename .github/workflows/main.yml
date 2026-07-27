@@ -1,0 +1,13 @@
+on: [workflow_dispatch]
+jobs:
+  fix-permission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Change permission
+        run: |
+          chmod +x apply-refactor.sh
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git commit -am "Fix script permission"
+          git push
