@@ -1,557 +1,497 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Gate Hotel - Guest Portal | فندق وشقق ذي قيت</title>
-<style>
-  :root {
-    --primary-gold: #b08a3e;
-    --gold-hover: #967432;
-    --dark-bg: #222222;
-    --light-bg: #f4f1eb;
-    --card-bg: #ffffff;
-    --text-main: #2b2b2b;
-    --accent-glow: rgba(176, 138, 62, 0.25);
-  }
-  
-  * {
-    box-sizing: border-box;
-  }
-  
-  body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    background: var(--light-bg); 
-    color: var(--text-main); 
-    margin: 0; 
-    padding-bottom: 40px;
-    transition: all 0.3s ease;
-  }
-  
-  /* --- HEADER & NAVIGATION --- */
-  header { 
-    background: linear-gradient(135deg, #1a1a1a 0%, #2f2f2f 100%);
-    color: #fff; 
-    padding: 30px 20px; 
-    text-align: center; 
-    border-bottom: 5px solid var(--primary-gold);
-    position: relative;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-  }
-  
-  .lang-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
-    color: white;
-    border: 1px solid var(--primary-gold);
-    padding: 8px 18px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 0.9em;
-    transition: all 0.3s ease;
-  }
-  .lang-btn:hover {
-    background: var(--primary-gold);
-    box-shadow: 0 0 12px var(--accent-glow);
-  }
-  [dir="rtl"] .lang-btn {
-    right: auto;
-    left: 20px;
-  }
-  
-  .logo { max-width: 200px; height: auto; margin-bottom: 12px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-  header h1 { color: var(--primary-gold); margin: 0; font-size: 1.9em; letter-spacing: 1px; text-transform: uppercase; }
-  header p { margin-top: 6px; color: #e0e0e0; font-size: 1.05em; }
-  
-  /* --- GRID CONTAINER --- */
-  .container { 
-    max-width: 1150px; 
-    margin: -20px auto 0; 
-    padding: 20px; 
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 25px;
-    position: relative;
-    z-index: 2;
-  }
-  
-  /* --- CARD STYLING & VISUAL ELEMENTS --- */
-  .card { 
-    background: var(--card-bg); 
-    border-radius: 16px; 
-    padding: 24px; 
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06); 
-    border-top: 4px solid var(--primary-gold);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.12);
-  }
-  
-  /* Corner Ribbon Element */
-  .card-ribbon {
-    position: absolute;
-    top: 12px;
-    right: -30px;
-    background: var(--primary-gold);
-    color: #fff;
-    font-size: 0.75em;
-    font-weight: bold;
-    padding: 4px 30px;
-    transform: rotate(45deg);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-    z-index: 10;
-  }
-  [dir="rtl"] .card-ribbon {
-    right: auto;
-    left: -30px;
-    transform: rotate(-45deg);
-  }
-  
-  /* --- IMAGE ELEMENTS --- */
-  .img-container {
-    width: 100%;
-    height: 200px;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 18px;
-    position: relative;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-  
-  .card-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-  .card:hover .card-img {
-    transform: scale(1.08);
-  }
-  
-  .img-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60%;
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
-    z-index: 1;
-    pointer-events: none;
-  }
-  
-  .img-badge {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    background: rgba(47, 47, 47, 0.85);
-    backdrop-filter: blur(6px);
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.85em;
-    font-weight: 600;
-    z-index: 2;
-    border: 1px solid rgba(255,255,255,0.2);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  [dir="rtl"] .img-badge {
-    left: auto;
-    right: 12px;
-  }
-  
-  /* --- TYPOGRAPHY & LISTS --- */
-  h2 { 
-    color: var(--primary-gold); 
-    margin-top: 0; 
-    font-size: 1.35em; 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    border-bottom: 2px solid #f0ecdf; 
-    padding-bottom: 12px; 
-  }
-  
-  ul { padding-inline-start: 22px; margin: 12px 0; }
-  li { margin-bottom: 12px; line-height: 1.5; }
-  
-  /* Highlight Callout Boxes */
-  .info-box {
-    background: #fdfaf4;
-    border-left: 4px solid var(--primary-gold);
-    padding: 12px 15px;
-    border-radius: 6px;
-    margin: 10px 0;
-    font-size: 0.95em;
-  }
-  [dir="rtl"] .info-box {
-    border-left: none;
-    border-right: 4px solid var(--primary-gold);
-  }
-  
-  /* --- ACTION BUTTONS --- */
-  .action-btn { 
-    background: var(--primary-gold); 
-    color: #fff; 
-    border: none; 
-    padding: 14px 20px; 
-    border-radius: 10px; 
-    cursor: pointer; 
-    font-weight: bold; 
-    font-size: 1em;
-    width: 100%; 
-    margin-top: 18px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(176, 138, 62, 0.3);
-  }
-  .action-btn:hover { 
-    background: var(--gold-hover); 
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(176, 138, 62, 0.4);
-  }
-  .action-btn.secondary { 
-    background: #3a3a3a; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  }
-  .action-btn.secondary:hover { 
-    background: #1f1f1f; 
-    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-  }
-  
-  /* --- TABLES --- */
-  table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 12px; overflow: hidden; border-radius: 8px; border: 1px solid #eee; }
-  td, th { padding: 12px 14px; text-align: start; }
-  th { background: #f8f6f0; color: var(--dark-bg); font-weight: 700; }
-  tr:not(:last-child) td, tr:not(:last-child) th { border-bottom: 1px solid #eee; }
-  tr:hover td { background-color: #fdfaf4; }
-  .emergency-link { color: #d32f2f; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: space-between; }
-  
-  footer {
-    text-align: center;
-    padding: 30px 20px 10px;
-    color: #777;
-    font-size: 0.9em;
-  }
-</style>
-<script>
-function copyPassword(){
-  navigator.clipboard.writeText("123123");
-  const btn = document.getElementById("copy-btn");
-  const isArabic = document.documentElement.getAttribute("lang") === "ar";
-  btn.innerText = isArabic ? "✓ تم نسخ كلمة المرور بنجاح!" : "✓ Password Copied Successfully!";
-  btn.style.background = "#2e7d32";
-  btn.style.boxShadow = "0 4px 10px rgba(46, 125, 50, 0.3)";
-  setTimeout(() => {
-    btn.innerText = isArabic ? "نسخ كلمة المرور" : "Copy Password";
-    btn.style.background = "var(--primary-gold)";
-    btn.style.boxShadow = "0 4px 10px rgba(176, 138, 62, 0.3)";
-  }, 3000);
-}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>The Gate Hotel &amp; Apartments — Guest Portal</title>
 
-function toggleLanguage() {
-  const html = document.documentElement;
-  const langBtn = document.getElementById("lang-btn");
-  const isEnglish = html.getAttribute("lang") === "en";
-  
-  if (isEnglish) {
-    html.setAttribute("lang", "ar");
-    html.setAttribute("dir", "rtl");
-    langBtn.innerText = "English / الإنجليزية";
-    updateTexts("ar");
-  } else {
-    html.setAttribute("lang", "en");
-    html.setAttribute("dir", "ltr");
-    langBtn.innerText = "العربية / Arabic";
-    updateTexts("en");
-  }
-}
+  <meta name="description" content="Official guest portal of The Gate Hotel & Apartments, Dammam. Wi-Fi, dining, facilities, front desk, hotel policies and emergency information.">
+  <meta name="theme-color" content="#161310">
+  <meta name="color-scheme" content="light">
+  <link rel="canonical" href="https://strieno.github.io/GateHotelGuest/">
 
-const content = {
-  en: {
-    portalTitle: "THE GATE HOTEL & APARTMENTS",
-    portalSub: "Guest Information Portal",
-    wifiTitle: "📶 Wi‑Fi Access",
-    wifiNet: "<b>Network:</b> GATE WIFI",
-    wifiUser: "<b>Username:</b> Your Room Number",
-    wifiPass: "<b>Password:</b> 123123",
-    copyBtn: "Copy Password",
-    stayTitle: "🕒 Stay Information",
-    badgeStay: "🛏️ Premium Suites",
-    checkIn: "<b>Check-in:</b> 2:00 PM",
-    checkOut: "<b>Check-out:</b> 12:00 PM (Afternoon / Noon)",
-    roomService: "<b>Room Service (24/7):</b> Dial 11, 22, or 33",
-    dineTitle: "🍽️ Gardena Restaurant",
-    badgeDine: "🍴 Ext. 200 • First Floor",
-    dineLoc: "<b>Location:</b> First Floor • <b>Ext:</b> 200",
-    dineHours: "• <b>Breakfast:</b> 6:00 AM – 10:00 AM<br>• <b>Lunch:</b> 11:00 AM – 3:00 PM<br>• <b>Dinner:</b> 7:00 PM – 11:00 PM",
-    dineBtn: "Call Gardena Restaurant (Ext. 200)",
-    facTitle: "🏊 Hotel Facilities",
-    badgeFac: "☕ Starbucks & Lounge",
-    facPool: "<b>Swimming Pool (Ground Floor):</b><br>• 👩 <b>Ladies Only:</b> 6:00 AM – 11:00 AM<br>• 👨 <b>Gentlemen Only:</b> 11:00 AM – 11:00 PM",
-    facGym: "<b>Fitness Gym:</b> First Floor (24 Hours / 7 Days a Week)",
-    facMasjid: "<b>Prayer Room (Masjid):</b> First Floor",
-    facCafe: "<b>Starbucks Café:</b> Ground Floor (8:00 AM – 10:00 PM)",
-    recTitle: "☎ Front Desk & Room Service",
-    recDesc: "Available 24 hours a day to assist you with guest inquiries, housekeeping, and in-room dining orders.",
-    recDial: "Dial directly from your room phone for any request:<br><b>11</b>, <b>22</b>, or <b>33</b>",
-    recBtn: "Call Front Desk & Room Service",
-    polTitle: "🚭 Hotel Policies",
-    badgePol: "✨ Comfort & Care",
-    pol1: "No Smoking inside the rooms",
-    pol2: "No Pets Allowed",
-    pol3: "Please respect quiet hours after 10:00 PM",
-    locTitle: "📍 Location & Nearby",
-    badgeLoc: "🏢 Taiba District",
-    locDesc: "The Gate Hotel & Apartments<br>Taiba District, Dammam, Saudi Arabia",
-    locBtn: "📍 Open in Google Maps",
-    emTitle: "🚨 Emergency Numbers",
-    emPolice: "Police Department",
-    emAmb: "Ambulance / Medical",
-    emFire: "Fire Department"
-  },
-  ar: {
-    portalTitle: "فندق وشقق ذي قيت",
-    portalSub: "بوابة معلومات النزلاء",
-    wifiTitle: "📶 شبكة واي فاي (Wi-Fi)",
-    wifiNet: "<b>اسم الشبكة:</b> GATE WIFI",
-    wifiUser: "<b>اسم المستخدم:</b> رقم غرفتك",
-    wifiPass: "<b>كلمة المرور:</b> 123123",
-    copyBtn: "نسخ كلمة المرور",
-    stayTitle: "🕒 معلومات الإقامة",
-    badgeStay: "🛏️ أجنحة فاخرة",
-    checkIn: "<b>تسجيل الدخول:</b> 2:00 مساءً",
-    checkOut: "<b>تسجيل الخروج:</b> 12:00 ظهراً",
-    roomService: "<b>خدمة الغرف (24/7):</b> اتصل على 11 أو 22 أو 33",
-    dineTitle: "🍽️ مطعم جاردينيا (Gardena)",
-    badgeDine: "🍴 تحويلة 200 • الدور الأول",
-    dineLoc: "<b>الموقع:</b> الدور الأول • <b>تحويلة:</b> 200",
-    dineHours: "• <b>الإفطار:</b> 6:00 ص – 10:00 ص<br>• <b>الغداء:</b> 11:00 ص – 3:00 م<br>• <b>العشاء:</b> 7:00 م – 11:00 م",
-    dineBtn: "الاتصال بمطعم جاردينيا (تحويلة 200)",
-    facTitle: "🏊 مرافق الفندق",
-    badgeFac: "☕ ستاربكس ولاونج",
-    facPool: "<b>المسبح (الدور الأرضي):</b><br>• 👩 <b>مخصص للسيدات:</b> 6:00 ص – 11:00 ص<br>• 👨 <b>مخصص للرجال:</b> 11:00 ص – 11:00 م",
-    facGym: "<b>النادي الرياضي:</b> الدور الأول (متاح 24 ساعة طوال أيام الأسبوع)",
-    facMasjid: "<b>المصلى:</b> الدور الأول",
-    facCafe: "<b>مقهى ستاربكس (Starbucks):</b> الدور الأرضي (8:00 ص – 10:00 م)",
-    recTitle: "☎ الاستقبال وخدمة الغرف",
-    recDesc: "فريقنا متاح على مدار 24 ساعة لخدمتك وتلبية كافة استفساراتك، وطلبات النظافة، ووجبات خدمة الغرف.",
-    recDial: "اتصل مباشرة من هاتف غرفتك لأي طلب:<br><b>11</b> أو <b>22</b> أو <b>33</b>",
-    recBtn: "الاتصال بالاستقبال وخدمة الغرف",
-    polTitle: "🚭 سياسات الفندق",
-    badgePol: "✨ راحة واهتمام",
-    pol1: "يمنع التدخين منعاً باتاً داخل الغرف",
-    pol2: "غير مسموح باصطحاب الحيوانات الأليفة",
-    pol3: "يرجى مراعاة أوقات الهدوء بعد الساعة 10:00 مساءً",
-    locTitle: "📍 الموقع والأماكن القريبة",
-    badgeLoc: "🏢 حي طيبة",
-    locDesc: "فندق وشقق ذي قيت<br>حي طيبة، الدمام، المملكة العربية السعودية",
-    locBtn: "📍 فتح في خرائط جوجل",
-    emTitle: "🚨 أرقام الطوارئ في السعودية",
-    emPolice: "الشرطة",
-    emAmb: "الإسعاف",
-    emFire: "الدفاع المدني"
-  }
-};
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The Gate Hotel & Apartments">
+  <meta property="og:title" content="The Gate Hotel &amp; Apartments — Guest Portal">
+  <meta property="og:description" content="Your digital guest concierge: Wi-Fi, dining, facilities, front desk and more. فندق وشقق ذي قيت — بوابة النزلاء.">
+  <meta property="og:url" content="https://strieno.github.io/GateHotelGuest/">
+  <meta property="og:image" content="https://strieno.github.io/GateHotelGuest/social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Gate Hotel & Apartments — Guest Information Portal, Dammam">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ar_SA">
 
-function updateTexts(lang) {
-  const t = content[lang];
-  document.getElementById("t-portalTitle").innerText = t.portalTitle;
-  document.getElementById("t-portalSub").innerText = t.portalSub;
-  document.getElementById("t-wifiTitle").innerText = t.wifiTitle;
-  document.getElementById("t-wifiNet").innerHTML = t.wifiNet;
-  document.getElementById("t-wifiUser").innerHTML = t.wifiUser;
-  document.getElementById("t-wifiPass").innerHTML = t.wifiPass;
-  document.getElementById("copy-btn").innerText = t.copyBtn;
-  document.getElementById("t-stayTitle").innerText = t.stayTitle;
-  document.getElementById("t-badgeStay").innerText = t.badgeStay;
-  document.getElementById("t-checkIn").innerHTML = t.checkIn;
-  document.getElementById("t-checkOut").innerHTML = t.checkOut;
-  document.getElementById("t-roomService").innerHTML = t.roomService;
-  document.getElementById("t-dineTitle").innerText = t.dineTitle;
-  document.getElementById("t-badgeDine").innerText = t.badgeDine;
-  document.getElementById("t-dineLoc").innerHTML = t.dineLoc;
-  document.getElementById("t-dineHours").innerHTML = t.dineHours;
-  document.getElementById("t-dineBtn").innerText = t.dineBtn;
-  document.getElementById("t-facTitle").innerText = t.facTitle;
-  document.getElementById("t-badgeFac").innerText = t.badgeFac;
-  document.getElementById("t-facPool").innerHTML = t.facPool;
-  document.getElementById("t-facGym").innerHTML = t.facGym;
-  document.getElementById("t-facMasjid").innerHTML = t.facMasjid;
-  document.getElementById("t-facCafe").innerHTML = t.facCafe;
-  document.getElementById("t-recTitle").innerText = t.recTitle;
-  document.getElementById("t-recDesc").innerText = t.recDesc;
-  document.getElementById("t-recDial").innerHTML = t.recDial;
-  document.getElementById("t-recBtn").innerText = t.recBtn;
-  document.getElementById("t-polTitle").innerText = t.polTitle;
-  document.getElementById("t-badgePol").innerText = t.badgePol;
-  document.getElementById("t-pol1").innerText = t.pol1;
-  document.getElementById("t-pol2").innerText = t.pol2;
-  document.getElementById("t-pol3").innerText = t.pol3;
-  document.getElementById("t-locTitle").innerText = t.locTitle;
-  document.getElementById("t-badgeLoc").innerText = t.badgeLoc;
-  document.getElementById("t-locDesc").innerHTML = t.locDesc;
-  document.getElementById("t-locBtn").innerText = t.locBtn;
-  document.getElementById("t-emTitle").innerText = t.emTitle;
-  document.getElementById("t-emPolice").innerText = t.emPolice;
-  document.getElementById("t-emAmb").innerText = t.emAmb;
-  document.getElementById("t-emFire").innerText = t.emFire;
-}
-</script>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Gate Hotel &amp; Apartments — Guest Portal">
+  <meta name="twitter:description" content="Your digital guest concierge: Wi-Fi, dining, facilities, front desk and more.">
+  <meta name="twitter:image" content="https://strieno.github.io/GateHotelGuest/social-preview.png">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-<header>
-<button class="lang-btn" id="lang-btn" onclick="toggleLanguage()">العربية / Arabic</button>
-<img src="logo.png" alt="The Gate Hotel & Apartments" class="logo">
-<h1 id="t-portalTitle">THE GATE HOTEL & APARTMENTS</h1>
-<p id="t-portalSub">Guest Information Portal</p>
-</header>
+  <a class="skip-link" href="#main" data-i18n="skipLink">Skip to main content</a>
 
-<div class="container">
+  <!-- ============================= HERO ============================= -->
+  <header class="hero" id="top">
+    <div class="hero-bg" aria-hidden="true">
+      <img src="assets/images/420739734.jpg" alt="" fetchpriority="high" width="512" height="768">
+      <div class="hero-bg-overlay"></div>
+    </div>
 
-<!-- CARD 1: WI-FI -->
-<div class="card">
-<div class="card-ribbon">24/7 FREE</div>
-<div>
-  <h2 id="t-wifiTitle">📶 Wi‑Fi Access</h2>
-  <div class="info-box">
-    <p id="t-wifiNet" style="margin: 5px 0;"><b>Network:</b> GATE WIFI</p>
-    <p id="t-wifiUser" style="margin: 5px 0;"><b>Username:</b> Your Room Number</p>
-    <p id="t-wifiPass" style="margin: 5px 0;"><b>Password:</b> 123123</p>
-  </div>
-</div>
-<button class="action-btn" id="copy-btn" onclick="copyPassword()">Copy Password</button>
-</div>
+    <div class="hero-inner">
+      <button class="lang-toggle" id="lang-toggle" type="button" data-i18n="langToggle">العربية / English</button>
 
-<!-- CARD 2: STAY INFO -->
-<div class="card">
-<div>
-  <div class="img-container">
-    <img src="420739670.jpg" alt="Bedroom Suite" class="card-img">
-    <div class="img-overlay"></div>
-    <span class="img-badge" id="t-badgeStay">🛏️ Premium Suites</span>
-  </div>
-  <h2 id="t-stayTitle">🕒 Stay Information</h2>
-  <ul>
-    <li id="t-checkIn"><b>Check-in:</b> 2:00 PM</li>
-    <li id="t-checkOut"><b>Check-out:</b> 12:00 PM (Afternoon / Noon)</li>
-    <li id="t-roomService"><b>Room Service (24/7):</b> Dial 11, 22, or 33</li>
-  </ul>
-</div>
-</div>
+      <img class="hero-logo" src="assets/images/logo.png" alt="The Gate Hotel &amp; Apartments" width="331" height="150" fetchpriority="high">
 
-<!-- CARD 3: GARDENA RESTAURANT -->
-<div class="card">
-<div>
-  <div class="img-container">
-    <img src="310238969.jpg" alt="Gardena Restaurant Seating" class="card-img">
-    <div class="img-overlay"></div>
-    <span class="img-badge" id="t-badgeDine">🍴 Ext. 200 • First Floor</span>
-  </div>
-  <h2 id="t-dineTitle">🍽️ Gardena Restaurant</h2>
-  <div class="info-box" style="margin-bottom: 12px;">
-    <span id="t-dineLoc"><b>Location:</b> First Floor • <b>Ext:</b> 200</span>
-  </div>
-  <p id="t-dineHours" style="line-height: 1.6; margin: 0;">• <b>Breakfast:</b> 6:00 AM – 10:00 AM<br>• <b>Lunch:</b> 11:00 AM – 3:00 PM<br>• <b>Dinner:</b> 7:00 PM – 11:00 PM</p>
-</div>
-<a href="tel:200" class="action-btn secondary" id="t-dineBtn">Call Gardena Restaurant (Ext. 200)</a>
-</div>
+      <p class="hero-eyebrow" data-i18n="heroEyebrow">Guest Information Portal</p>
+      <h1 class="hero-title" data-i18n="heroTitle">The Gate Hotel &amp; Apartments</h1>
+      <p class="hero-arabic-name" lang="ar" dir="rtl" data-i18n="heroArabicName">فندق وشقق ذي قيت</p>
+      <p class="hero-welcome" data-i18n="heroWelcome">A warm welcome. Everything you need for a comfortable stay — Wi-Fi, dining, facilities and assistance — is here, at your fingertips.</p>
 
-<!-- CARD 4: FACILITIES -->
-<div class="card">
-<div>
-  <div class="img-container">
-    <img src="420738999.jpg" alt="Starbucks Cafe and Refreshments" class="card-img">
-    <div class="img-overlay"></div>
-    <span class="img-badge" id="t-badgeFac">☕ Starbucks & Lounge</span>
-  </div>
-  <h2 id="t-facTitle">🏊 Hotel Facilities</h2>
-  <ul>
-    <li id="t-facPool"><b>Swimming Pool (Ground Floor):</b><br>• 👩 <b>Ladies Only:</b> 6:00 AM – 11:00 AM<br>• 👨 <b>Gentlemen Only:</b> 11:00 AM – 11:00 PM</li>
-    <li id="t-facGym"><b>Fitness Gym:</b> First Floor (24 Hours / 7 Days a Week)</li>
-    <li id="t-facMasjid"><b>Prayer Room (Masjid):</b> First Floor</li>
-    <li id="t-facCafe"><b>Starbucks Café:</b> Ground Floor (8:00 AM – 10:00 PM)</li>
-  </ul>
-</div>
-</div>
+      <div class="hero-meta" role="group" data-i18n-aria="heroMetaAria">
+        <div class="hero-meta-item">
+          <svg class="meta-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          <div>
+            <span class="meta-label" data-i18n="localTime">Dammam time</span>
+            <span class="meta-value" id="clock-time">--:--</span>
+          </div>
+        </div>
+        <div class="hero-meta-item" id="weather-wrap" hidden>
+          <svg class="meta-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6 1.5A3.75 3.75 0 0 0 7 19h10.5z"></path></svg>
+          <div>
+            <span class="meta-label" data-i18n="weatherLabel">Weather</span>
+            <span class="meta-value" id="weather-value">—</span>
+          </div>
+        </div>
+      </div>
 
-<!-- CARD 5: RECEPTION & ROOM SERVICE COMBINED -->
-<div class="card">
-<div class="card-ribbon">24/7 SERVICE</div>
-<div>
-  <h2 id="t-recTitle">☎ Front Desk & Room Service</h2>
-  <p id="t-recDesc" style="color: #555; line-height: 1.5;">Available 24 hours a day to assist you with guest inquiries, housekeeping, and in-room dining orders.</p>
-  <div class="info-box">
-    <span id="t-recDial">Dial directly from your room phone for any request:<br><b>11</b>, <b>22</b>, or <b>33</b></span>
-  </div>
-</div>
-<a href="tel:0138000000" class="action-btn secondary" id="t-recBtn">Call Front Desk & Room Service</a>
-</div>
+      <nav class="quick-actions" data-i18n-aria="qaNavAria">
+        <a class="quick-action" href="#wifi">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0"></path><path d="M8.5 16a5.5 5.5 0 0 1 7 0"></path><path d="M12 19.5h.01"></path></svg>
+          <span data-i18n="qaWifi">Wi-Fi</span>
+        </a>
+        <a class="quick-action" href="#dining">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 3v8h3.5V3"></path><path d="M8.5 3v8c0 1.8-1.4 3-3.5 3"></path><path d="M6.75 3v18"></path><path d="M18 3v18h-1.5c-2.8 0-4.5-2.2-4.5-5v-2c0-4 2-8 6-8z"></path></svg>
+          <span data-i18n="qaDining">Dining</span>
+        </a>
+        <a class="quick-action" href="#facilities">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          <span data-i18n="qaFacilities">Facilities</span>
+        </a>
+        <a class="quick-action" href="#location">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+          <span data-i18n="qaDirections">Directions</span>
+        </a>
+        <a class="quick-action" href="tel:+966138000000" data-i18n-aria="qaCallAria">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg>
+          <span data-i18n="qaCall">Call</span>
+        </a>
+        <a class="quick-action" href="#emergency">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3l9-16z"></path><path d="M12 10v4"></path><path d="M12 17h.01"></path></svg>
+          <span data-i18n="qaEmergency">Emergency</span>
+        </a>
+      </nav>
+    </div>
+  </header>
 
-<!-- CARD 6: POLICIES -->
-<div class="card">
-<div>
-  <div class="img-container">
-    <img src="420739658.jpg" alt="Apartment Living Room" class="card-img">
-    <div class="img-overlay"></div>
-    <span class="img-badge" id="t-badgePol">✨ Comfort & Care</span>
-  </div>
-  <h2 id="t-polTitle">🚭 Hotel Policies</h2>
-  <ul>
-    <li id="t-pol1">No Smoking inside the rooms</li>
-    <li id="t-pol2">No Pets Allowed</li>
-    <li id="t-pol3">Please respect quiet hours after 10:00 PM</li>
-  </ul>
-</div>
-</div>
+  <!-- ============================= MAIN ============================= -->
+  <main id="main" class="cards-grid">
 
-<!-- CARD 7: LOCATION -->
-<div class="card">
-<div>
-  <div class="img-container">
-    <img src="420739734.jpg" alt="The Gate Hotel Building Exterior" class="card-img">
-    <div class="img-overlay"></div>
-    <span class="img-badge" id="t-badgeLoc">🏢 Taiba District</span>
-  </div>
-  <h2 id="t-locTitle">📍 Location & Nearby</h2>
-  <p id="t-locDesc" style="line-height: 1.6; color: #444;">The Gate Hotel & Apartments<br>Taiba District, Dammam, Saudi Arabia</p>
-</div>
-<a href="https://maps.google.com/?q=The+Gate+Hotel+and+Apartments+Dammam+Taiba+District" target="_blank" class="action-btn" id="t-locBtn">📍 Open in Google Maps</a>
-</div>
+    <!-- WI-FI -->
+    <section class="card card-wifi span-2" id="wifi" aria-labelledby="wifi-title">
+      <div class="card-head">
+        <div class="card-head-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0"></path><path d="M8.5 16a5.5 5.5 0 0 1 7 0"></path><path d="M12 19.5h.01"></path></svg>
+        </div>
+        <div>
+          <h2 class="card-title" id="wifi-title" data-i18n="wifiTitle">Wi-Fi Access</h2>
+          <p class="card-sub" data-i18n="wifiSub">Complimentary high-speed Wi-Fi for all guests</p>
+        </div>
+      </div>
 
-<!-- CARD 8: EMERGENCIES -->
-<div class="card">
-<div>
-  <h2 id="t-emTitle">🚨 Emergency Numbers</h2>
-  <table>
-    <tr><th id="t-emPolice">Police Department</th><td><a href="tel:911" class="emergency-link"><span>911</span> <span>📞</span></a></td></tr>
-    <tr><th id="t-emAmb">Ambulance / Medical</th><td><a href="tel:997" class="emergency-link"><span>997</span> <span>📞</span></a></td></tr>
-    <tr><th id="t-emFire">Fire Department</th><td><a href="tel:998" class="emergency-link"><span>998</span> <span>📞</span></a></td></tr>
-  </table>
-</div>
-</div>
+      <div class="wifi-grid">
+        <div class="wifi-row">
+          <span class="wifi-row-label" data-i18n="wifiNet">Network</span>
+          <div class="wifi-row-value">
+            <code class="mono">GATE WIFI</code>
+            <button class="icon-btn copy-btn" type="button" data-copy="GATE WIFI" data-toast-key="toastCopiedNetwork" data-i18n-aria="copyNetworkAria">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>
+            </button>
+          </div>
+        </div>
+        <div class="wifi-row">
+          <span class="wifi-row-label" data-i18n="wifiUser">Username</span>
+          <div class="wifi-row-value">
+            <span class="mono" data-i18n="wifiUserValue">Your room number</span>
+          </div>
+        </div>
+        <div class="wifi-row wifi-row-password">
+          <span class="wifi-row-label" data-i18n="wifiPass">Password</span>
+          <div class="wifi-row-value">
+            <code class="mono password-value">123123</code>
+            <button class="icon-btn copy-btn" type="button" data-copy="123123" data-toast-key="toastCopiedPassword" data-i18n-aria="copyPassAria">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
 
-</div>
+      <div class="wifi-actions">
+        <button class="btn btn-gold copy-btn" id="copy-password-btn" type="button" data-copy="123123" data-toast-key="toastCopiedPassword">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>
+          <span data-i18n="copyPassword">Copy Password</span>
+        </button>
+      </div>
+    </section>
 
-<footer>
-  <p>© 2026 The Gate Hotel & Apartments • Dammam, Saudi Arabia</p>
-</footer>
+    <!-- STAY INFORMATION -->
+    <section class="card" id="stay" aria-labelledby="stay-title">
+      <div class="card-head">
+        <div class="card-head-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 9h18"></path><path d="M7 13h4"></path><path d="M7 16h7"></path><path d="M16 14h1"></path></svg>
+        </div>
+        <div>
+          <h2 class="card-title" id="stay-title" data-i18n="stayTitle">Stay Information</h2>
+          <p class="card-sub" data-i18n="staySub">Timing for a comfortable arrival and departure</p>
+        </div>
+      </div>
 
+      <div class="times-grid">
+        <div class="time-box">
+          <span class="time-box-label" data-i18n="checkIn">Check-in</span>
+          <span class="time-box-value">2:00 PM</span>
+          <span class="time-box-hint" data-i18n="checkInHint">from 2:00 PM</span>
+        </div>
+        <div class="time-box">
+          <span class="time-box-label" data-i18n="checkOut">Check-out</span>
+          <span class="time-box-value">12:00 PM</span>
+          <span class="time-box-hint" data-i18n="checkOutHint">by 12:00 PM</span>
+        </div>
+      </div>
+
+      <ul class="checklist">
+        <li data-i18n-html="stayNote"><b>Room service (24/7):</b> dial 11, 22 or 33 from your room phone</li>
+      </ul>
+    </section>
+
+    <!-- FRONT DESK -->
+    <section class="card" id="front-desk" aria-labelledby="frontdesk-title">
+      <div class="card-head">
+        <div class="card-head-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 7h8"></path><path d="M8 11h8"></path><path d="M8 15h4"></path></svg>
+        </div>
+        <div>
+          <h2 class="card-title" id="frontdesk-title" data-i18n="fdTitle">Front Desk</h2>
+          <p class="card-sub" data-i18n="fdSub">Available 24 hours for any request</p>
+        </div>
+      </div>
+
+      <p class="card-text" data-i18n="fdDesc">Dial directly from your room phone — housekeeping, in-room dining, concierge and guest requests.</p>
+
+      <div class="ext-list">
+        <a class="ext-row" href="tel:11" data-i18n-aria="extAria">
+          <span class="ext-name" data-i18n="extReception">Reception</span>
+          <span class="ext-num">11</span>
+        </a>
+        <a class="ext-row" href="tel:22" data-i18n-aria="extAria">
+          <span class="ext-name" data-i18n="extHousekeeping">Housekeeping</span>
+          <span class="ext-num">22</span>
+        </a>
+        <a class="ext-row" href="tel:33" data-i18n-aria="extAria">
+          <span class="ext-name" data-i18n="extService">Room Service</span>
+          <span class="ext-num">33</span>
+        </a>
+      </div>
+
+      <p class="card-note" data-i18n="fdNote">Extensions 11, 22 and 33 are internal — they work from your room phone.</p>
+
+      <a class="btn btn-dark" href="tel:+966138000000">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg>
+        <span data-i18n="fdCall">Call Front Desk</span>
+      </a>
+    </section>
+
+    <!-- GARDENA RESTAURANT -->
+    <section class="card" id="dining" aria-labelledby="dining-title">
+      <div class="card-media" aria-hidden="true">
+        <img src="assets/images/310238969.jpg" alt="" width="1024" height="683" loading="lazy">
+      </div>
+      <div class="card-body">
+        <div class="card-head">
+          <div class="card-head-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 3v8h3.5V3"></path><path d="M8.5 3v8c0 1.8-1.4 3-3.5 3"></path><path d="M6.75 3v18"></path><path d="M18 3v18h-1.5c-2.8 0-4.5-2.2-4.5-5v-2c0-4 2-8 6-8z"></path></svg>
+          </div>
+          <div>
+            <h2 class="card-title" id="dining-title" data-i18n="diningTitle">Gardena Restaurant</h2>
+            <p class="card-sub" data-i18n="diningSub">First Floor &middot; Extension 200</p>
+          </div>
+        </div>
+
+        <div class="hours-list">
+          <div class="hours-row">
+            <span class="hours-meal" data-i18n="mealBreakfast">Breakfast</span>
+            <span class="hours-time">6:00 AM – 10:00 AM</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-meal" data-i18n="mealLunch">Lunch</span>
+            <span class="hours-time">11:00 AM – 3:00 PM</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-meal" data-i18n="mealDinner">Dinner</span>
+            <span class="hours-time">7:00 PM – 11:00 PM</span>
+          </div>
+        </div>
+
+        <a class="btn btn-gold" href="tel:200">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg>
+          <span data-i18n="diningCall">Call Gardena Restaurant</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- FACILITIES -->
+    <section class="card span-2" id="facilities" aria-labelledby="fac-title">
+      <div class="card-head">
+        <div class="card-head-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"></path><path d="M9 12l2 2 4-4"></path></svg>
+        </div>
+        <div>
+          <h2 class="card-title" id="fac-title" data-i18n="facTitle">Hotel Facilities</h2>
+          <p class="card-sub" data-i18n="facSub">Everything for a relaxing stay</p>
+        </div>
+      </div>
+
+      <div class="fac-grid">
+
+        <div class="fac-card" data-facility="pool">
+          <span class="fac-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 14c1.5 1.2 3 1.2 4.5 0s3-1.2 4.5 0 3 1.2 4.5 0 3-1.2 4.5 0"></path><path d="M4 18c1.5 1.2 3 1.2 4.5 0s3-1.2 4.5 0 3 1.2 4.5 0 3-1.2 4.5 0"></path><path d="M9 3l2 3-2 2 2 2"></path><path d="M15 3l2 3-2 2 2 2"></path></svg>
+          </span>
+          <div class="fac-info">
+            <h3 class="fac-name" data-i18n="facPool">Swimming Pool</h3>
+            <p class="fac-meta" data-i18n="facPoolMeta">Ground Floor &middot; 6:00 AM – 11:00 PM</p>
+            <p class="fac-meta fac-hours">
+              <span data-i18n="facPoolLadies">Ladies 6:00 AM – 11:00 AM</span> &middot; <span data-i18n="facPoolGents">Gentlemen 11:00 AM – 11:00 PM</span>
+            </p>
+          </div>
+          <span class="status-pill" data-status="pool" hidden></span>
+        </div>
+
+        <div class="fac-card" data-facility="gym">
+          <span class="fac-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12"></path><path d="M6 18L18 6"></path><path d="M4 9L3 8l5-5 1 1-3 3 2 2-3 3-2-2-1 1z"></path><path d="M20 15l1-1-5-5-1 1 3 3-2 2 3 3 1-1-1-1z"></path></svg>
+          </span>
+          <div class="fac-info">
+            <h3 class="fac-name" data-i18n="facGym">Fitness Gym</h3>
+            <p class="fac-meta" data-i18n="facGymMeta">First Floor &middot; Open 24 hours</p>
+          </div>
+          <span class="status-pill" data-status="gym" hidden></span>
+        </div>
+
+        <div class="fac-card" data-facility="masjid">
+          <span class="fac-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V10l4-3v14"></path><path d="M20 21V10l-4-3v14"></path><path d="M4 12h4"></path><path d="M16 12h4"></path><path d="M12 2c1.5 1.5 1.5 4 0 5.5S10.5 3.5 12 2z"></path><path d="M12 7.5V21"></path></svg>
+          </span>
+          <div class="fac-info">
+            <h3 class="fac-name" data-i18n="facMasjid">Prayer Room</h3>
+            <p class="fac-meta" data-i18n="facMasjidMeta">First Floor &middot; Open for all prayer times</p>
+          </div>
+        </div>
+
+        <div class="fac-card" data-facility="starbucks">
+          <span class="fac-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16l-1.5 11a2 2 0 0 1-2 1.8H7.5a2 2 0 0 1-2-1.8L4 9z"></path><path d="M8 9V6a4 4 0 0 1 8 0v3"></path><path d="M12 13v5"></path><path d="M9.5 14.5h5"></path></svg>
+          </span>
+          <div class="fac-info">
+            <h3 class="fac-name" data-i18n="facStarbucks">Starbucks Café</h3>
+            <p class="fac-meta" data-i18n="facStarbucksMeta">Ground Floor &middot; 8:00 AM – 10:00 PM</p>
+          </div>
+          <span class="status-pill" data-status="starbucks" hidden></span>
+        </div>
+
+        <div class="fac-card" data-facility="restaurant">
+          <span class="fac-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 3v8h3.5V3"></path><path d="M8.5 3v8c0 1.8-1.4 3-3.5 3"></path><path d="M6.75 3v18"></path><path d="M18 3v18h-1.5c-2.8 0-4.5-2.2-4.5-5v-2c0-4 2-8 6-8z"></path></svg>
+          </span>
+          <div class="fac-info">
+            <h3 class="fac-name" data-i18n="facRestaurant">Gardena Restaurant</h3>
+            <p class="fac-meta" data-i18n="facRestaurantMeta">First Floor &middot; Ext. 200</p>
+          </div>
+          <span class="status-pill" data-status="restaurant" hidden></span>
+        </div>
+
+        <div class="fac-card" data-facility="reception">
+          <span class="fac-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 7h8"></path><path d="M8 11h8"></path><path d="M8 15h4"></path></svg>
+          </span>
+          <div class="fac-info">
+            <h3 class="fac-name" data-i18n="facReception">Reception</h3>
+            <p class="fac-meta" data-i18n="facReceptionMeta">Ground Floor &middot; Open 24 hours</p>
+          </div>
+          <span class="status-pill" data-status="reception" hidden></span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HOTEL POLICIES -->
+    <section class="card" id="policies" aria-labelledby="policies-title">
+      <div class="card-head">
+        <div class="card-head-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"></path><path d="M9 12l2 2 4-4"></path></svg>
+        </div>
+        <div>
+          <h2 class="card-title" id="policies-title" data-i18n="polTitle">Hotel Policies</h2>
+          <p class="card-sub" data-i18n="polSub">To ensure every guest enjoys a comfortable stay</p>
+        </div>
+      </div>
+
+      <ul class="checklist">
+        <li data-i18n="pol1">No smoking inside the rooms</li>
+        <li data-i18n="pol2">No pets allowed</li>
+        <li data-i18n="pol3">Please respect quiet hours after 10:00 PM</li>
+      </ul>
+    </section>
+
+    <!-- LOCATION & DIRECTIONS -->
+    <section class="card" id="location" aria-labelledby="location-title">
+      <div class="card-media" aria-hidden="true">
+        <img src="assets/images/420739658.jpg" alt="" width="1024" height="683" loading="lazy">
+      </div>
+      <div class="card-body">
+        <div class="card-head">
+          <div class="card-head-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+          </div>
+          <div>
+            <h2 class="card-title" id="location-title" data-i18n="locTitle">Location &amp; Directions</h2>
+            <p class="card-sub" data-i18n="locSub">Taiba District, Dammam</p>
+          </div>
+        </div>
+
+        <address class="address" data-i18n-html="locAddress">The Gate Hotel &amp; Apartments<br>Taiba District, Dammam, Saudi Arabia</address>
+
+        <div class="btn-stack">
+          <a class="btn btn-gold" href="https://maps.google.com/?q=The+Gate+Hotel+and+Apartments+Dammam+Taiba+District" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+            <span data-i18n="openMaps">Open in Google Maps</span>
+          </a>
+          <button class="btn btn-light copy-btn" type="button" id="copy-address-btn" data-copy="The Gate Hotel & Apartments, Taiba District, Dammam, Saudi Arabia" data-toast-key="toastCopiedAddress" data-i18n-aria="copyAddressAria">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>
+            <span data-i18n="copyAddress">Copy Address</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- EMERGENCY -->
+    <section class="card card-emergency span-2" id="emergency" aria-labelledby="emergency-title">
+      <div class="card-head">
+        <div class="card-head-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3l9-16z"></path><path d="M12 10v4"></path><path d="M12 17h.01"></path></svg>
+        </div>
+        <div>
+          <h2 class="card-title" id="emergency-title" data-i18n="emTitle">Emergency Numbers</h2>
+          <p class="card-sub" data-i18n="emSub">Valid within Saudi Arabia &middot; Call from any phone</p>
+        </div>
+      </div>
+
+      <div class="emergency-grid">
+        <a class="emergency-row" href="tel:911">
+          <span class="emergency-name" data-i18n="emPolice">Police</span>
+          <span class="emergency-num">911</span>
+        </a>
+        <a class="emergency-row" href="tel:997">
+          <span class="emergency-name" data-i18n="emAmbulance">Ambulance</span>
+          <span class="emergency-num">997</span>
+        </a>
+        <a class="emergency-row" href="tel:998">
+          <span class="emergency-name" data-i18n="emFire">Fire &amp; Civil Defense</span>
+          <span class="emergency-num">998</span>
+        </a>
+      </div>
+
+      <p class="card-note" data-i18n="emNote">For any in-hotel emergency, please contact the front desk immediately.</p>
+    </section>
+
+    <!-- GUEST HELP -->
+    <section class="card" id="help" aria-labelledby="help-title">
+      <div class="card-head">
+        <div class="card-head-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.5a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1.4.9-1.4 1.7v.5"></path><path d="M12 17h.01"></path></svg>
+        </div>
+        <div>
+          <h2 class="card-title" id="help-title" data-i18n="helpTitle">Guest Help</h2>
+          <p class="card-sub" data-i18n="helpSub">Our team is here around the clock</p>
+        </div>
+      </div>
+
+      <ul class="checklist">
+        <li data-i18n="help1">Housekeeping and extra amenities — dial 22 from your room phone</li>
+        <li data-i18n="help2">In-room dining — dial 33 or Gardena Restaurant on extension 200</li>
+        <li data-i18n="help3">Local recommendations and directions — ask our front desk</li>
+      </ul>
+
+      <a class="btn btn-dark" href="#front-desk">
+        <span data-i18n="helpCta">Contact the Front Desk</span>
+      </a>
+    </section>
+
+  </main>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="site-footer">
+    <img class="footer-logo" src="assets/images/logo.png" alt="The Gate Hotel &amp; Apartments" width="180" height="82" loading="lazy">
+    <p class="footer-name" data-i18n="footerName">The Gate Hotel &amp; Apartments</p>
+    <p class="footer-meta" data-i18n="footerMeta">Taiba District, Dammam, Saudi Arabia</p>
+    <p class="footer-tag" data-i18n="footerTag">Guest Information Portal</p>
+    <div class="footer-actions">
+      <button class="footer-link" id="lang-toggle-footer" type="button" data-i18n="langToggle">العربية / English</button>
+      <a class="footer-link" href="#top" data-i18n="backToTop">Back to top</a>
+    </div>
+  </footer>
+
+  <!-- ============================= STICKY NAV ============================= -->
+  <nav class="bottom-nav" id="bottom-nav" data-i18n-aria="bottomNavAria">
+    <a class="bottom-nav-item is-active" href="#top" data-nav="home" data-i18n-aria="navHomeAria">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg>
+      <span data-i18n="navHome">Home</span>
+    </a>
+    <a class="bottom-nav-item" href="#wifi" data-nav="wifi" data-i18n-aria="navWifiAria">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0"></path><path d="M8.5 16a5.5 5.5 0 0 1 7 0"></path><path d="M12 19.5h.01"></path></svg>
+      <span data-i18n="navWifi">Wi-Fi</span>
+    </a>
+    <a class="bottom-nav-item" href="tel:+966138000000" data-nav="call" data-i18n-aria="navCallAria">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg>
+      <span data-i18n="navCall">Call</span>
+    </a>
+    <a class="bottom-nav-item" href="#dining" data-nav="dining" data-i18n-aria="navDiningAria">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 3v8h3.5V3"></path><path d="M8.5 3v8c0 1.8-1.4 3-3.5 3"></path><path d="M6.75 3v18"></path><path d="M18 3v18h-1.5c-2.8 0-4.5-2.2-4.5-5v-2c0-4 2-8 6-8z"></path></svg>
+      <span data-i18n="navDining">Dining</span>
+    </a>
+    <a class="bottom-nav-item" href="#location" data-nav="location" data-i18n-aria="navLocationAria">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+      <span data-i18n="navLocation">Location</span>
+    </a>
+  </nav>
+
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top" hidden>
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"></path><path d="M5 12l7-7 7 7"></path></svg>
+  </button>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="assets/js/translations.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
 </body>
 </html>

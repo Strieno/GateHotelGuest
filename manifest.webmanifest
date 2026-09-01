@@ -1,0 +1,27 @@
+{
+  "name": "The Gate Hotel & Apartments — Guest Portal",
+  "short_name": "Gate Hotel",
+  "description": "Guest portal for The Gate Hotel & Apartments, Dammam — Wi-Fi, dining, facilities and front desk.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f2e9",
+  "theme_color": "#161310",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
